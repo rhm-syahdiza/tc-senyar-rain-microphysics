@@ -1,5 +1,5 @@
 """
-Mean fall speed vs. drop diameter from Parsivel disdrometer spectrum.
+Mean fall speed vs. drop diameter from Parsivel disdrometer.
 """
 
 import os, csv, datetime as dt
