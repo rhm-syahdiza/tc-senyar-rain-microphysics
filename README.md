@@ -12,4 +12,3 @@ This repository is organized by manuscript figure.
 * Fig6.py: Dm vs log10_Nw scatterplot to identify stratiform and convective regimes.
 * Fig7.py: (a) shape-slope (mu-Lambda) compare to previous studies, (b) mu vs Rain Rate (Scatter + PDF), (c) Lambda vs Rain Rate (Scatter + PDF)
 * Fig8.py: (Z-R) compare to previous studies
-* requirements.txt: List of required Python packages and dependencies.
