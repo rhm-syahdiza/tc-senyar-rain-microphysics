@@ -5,7 +5,7 @@ Python scripts for "Microphysical Properties of Tropical Cyclone Senyar Outer Ra
 This repository is organized by manuscript figure.
 
 * Fig1_abc.py: Generates (a) Topography (DEMNAS) + TC Senyar track (ibtracks), (b) Time series — pressure, wind speed, distance to Kototabang (ibtracks), (c) ERA5 Mean 850 hPa Wind + Acc VIMD 
-* * Fig1_def.py: Generates (d-f) Himawari-9 TBB + TC Senyar track (ibtracks)
+* Fig1_def.py: Generates (d-f) Himawari-9 TBB + TC Senyar track (ibtracks)
 * Fig2.py: Mean fall speed vs. drop diameter from Parsivel disdrometer.
 * Fig3.py: Equatorial Atmosphere Radar (EAR) time-height cross-sections (a) SNR, (b) vertical velocity and (c) spectral width.
 * Fig4.py: Raindrop size distribution and instantaneous rainfall rate time-series.
