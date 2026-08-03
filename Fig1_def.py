@@ -129,7 +129,7 @@ for idx, current_time in enumerate(times):
     ax.scatter(
         ear_lon,
         ear_lat,
-        s=70,                 # ukuran marker
+        s=70,                 # marker size
         marker="s",           # ← square / rectangle
         color="magenta",
         edgecolor="black",
@@ -169,13 +169,11 @@ for idx, current_time in enumerate(times):
     # 2. Convert IBTrACS 'ISO_TIME' to actual datetime objects
     track["datetime"] = pd.to_datetime(track["ISO_TIME"])
 
-    # 3. Rename LAT and LON to lowercase so your existing ax.plot works
+    # 3. Rename LAT and LON to lowercase 
     track = track.rename(columns={"LAT": "lat", "LON": "lon"})
 
     # 4. FILTER FOR YOUR SPECIFIC CYCLONE
-    # Replace 'YOUR_STORM_NAME' with the actual name in ALL CAPS (e.g., 'PADDY', 'SEROJA')
-    # If it is an unnamed tropical depression, use the SID column instead.
-    storm_name = "YOUR_STORM_NAME" 
+    storm_name = "SENYAR" 
     track = track[track["NAME"] == storm_name]
 
     # Plot the full track for this specific cyclone
