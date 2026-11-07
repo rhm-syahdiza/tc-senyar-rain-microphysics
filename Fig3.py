@@ -18,9 +18,9 @@ from matplotlib.ticker import AutoMinorLocator
 # Open and merge EAR files
 # ============================================================
 files = [
-    "20251125.nc",
-    "20251126.nc",
-    "20251127.nc",
+    "../EAR/20251125.nc",
+    "../EAR/20251126.nc",
+    "../EAR/20251127.nc",
 ]
 
 files = [f for f in files if os.path.exists(f)]
@@ -69,6 +69,30 @@ width_mean = width.mean("time")
 dpl_mean = dpl.mean("time")
 
 # ============================================================
+# Context for the interpretation
+# ============================================================
+print(f"EAR period used: {str(time.values[0])[:16]} to {str(time.values[-1])[:16]} UTC ({time.size} time steps)")
+wv = width.values[np.isfinite(width.values)]
+print(f"Spectral width, event: median {np.median(wv):.2f}, p95 {np.percentile(wv, 95):.2f}, "
+      f"p99 {np.percentile(wv, 99):.2f}, max {wv.max():.2f} m/s")
+for z0, z1 in ((0, 2), (2, 5), (5, 10)):
+    ww = width.where((z >= z0) & (z < z1)).values
+    print(f"  {z0}-{z1} km: median {np.nanmedian(ww):.2f}, p95 {np.nanpercentile(ww, 95):.2f} m/s")
+base_mean = None
+bfiles = [f for f in BASELINE_FILES if os.path.exists(f)]
+if bfiles:
+    dsb = xr.open_mfdataset(bfiles, combine="by_coords")
+    wb = dsb["width"].sel(beam=0).where(lambda x: x < 1e9)
+    base_mean, z_base = wb.mean("time"), dsb["range"]
+    bv = wb.values[np.isfinite(wb.values)]
+    print(f"Spectral width, non-event baseline ({len(bfiles)} files): median {np.median(bv):.2f}, "
+          f"p95 {np.percentile(bv, 95):.2f}, max {bv.max():.2f} m/s")
+snr_mid = snr.where((z >= 3) & (z <= 6))
+zpk = z.isel(range=snr_mid.fillna(-1e9).argmax("range"))
+print(f"Height of the SNR maximum between 3 and 6 km: median {float(zpk.median()):.2f} km "
+      f"(IQR {float(zpk.quantile(0.25)):.2f}-{float(zpk.quantile(0.75)):.2f}); check persistence before calling it a bright band")
+
+# ============================================================
 # Figure & layout (3 × 2)
 # ============================================================
 fig = plt.figure(figsize=(8.5, 10.5), facecolor="white")
@@ -104,8 +128,8 @@ cf_snr = ax_snr.contourf(
     extend="max"
 )
 
-ax_snr.set_ylabel("Altitude (km)", fontweight="bold")
-ax_snr.set_title("(a) Echo Power SNR", loc="left", fontweight="bold", fontsize=11)
+ax_snr.set_ylabel("Altitude (km AGL)", fontweight="bold")
+ax_snr.set_title("(a) Echo Power Signal to Noise Ratio (SNR)", loc="left", fontweight="bold", fontsize=11)
 ax_snr.set_xlim(t_start, t_end)
 
 # Colorbar
@@ -145,8 +169,8 @@ ref_wind = 20 if np.nanmax(wind_speed) > 10 else 10
 
 Q = ax_w.quiver(time[::t_skip], z[::z_skip], U[::z_skip, ::t_skip], V[::z_skip, ::t_skip],
                 scale=800, width=0.0027, color="black", zorder=3)
-ax_w.set_ylabel("Altitude (km)", fontweight="bold")
-ax_w.set_title(r"(b) Vertical Velocity ($w$) & Horizontal Wind", loc="left", fontweight="bold", fontsize=11)
+ax_w.set_ylabel("Altitude (km AGL)", fontweight="bold")
+ax_w.set_title(r"(b) EAR Vertical Air Velocity ($w$) & Horizontal Wind", loc="left", fontweight="bold", fontsize=11)
 
 # Colorbar
 cax_w = fig.add_axes([0.71, 0.39, 0.018, 0.18])
@@ -205,11 +229,13 @@ cbar_width.ax.tick_params(labelsize=8)
 # Mean Plot
 ax_width_prof.axvline(0, color="gray", linestyle="--", lw=0.8)
 ax_width_prof.plot(width_mean, z, color="black", label=r"$\sigma_v$ mean")
+if base_mean is not None:
+    ax_width_prof.plot(base_mean, z_base, color="tab:red", ls="--", label="non-event mean")
 ax_width_prof.set_xlim(0, 2)
 ax_width_prof.legend(frameon=False, fontsize=8)
 ax_width_prof.tick_params(labelleft=False)
 
-ax_width.set_ylabel("Altitude (km)", fontweight="bold")
+ax_width.set_ylabel("Altitude (km AGL)", fontweight="bold")
 ax_width.set_xlabel("Time (DDHH UTC)", fontweight="bold", labelpad=8)
 
 # ============================================================
@@ -233,12 +259,26 @@ plt.tight_layout(rect=[0.0, 0.07, 0.83, 1.0])
 # Save
 # ============================================================
 script_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else "."
+
+png_path = os.path.join(script_dir, "Fig3.png")
+tif_path = os.path.join(script_dir, "Fig3.tif")
+
+# Save as PNG
 plt.savefig(
-    os.path.join(script_dir, "Fig3.png"),
+    png_path,
     dpi=600,
     bbox_inches="tight",
     facecolor="white"
 )
+
+# Save as TIFF
+plt.savefig(
+    tif_path,
+    dpi=600,
+    bbox_inches="tight",
+    facecolor="white"
+)
+
 plt.close()
 
-print(f"Saved cleanly → {os.path.join(script_dir, 'Fig3.png')}")
+print(f"Saved cleanly → {png_path} and {tif_path}")
