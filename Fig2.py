@@ -1,13 +1,12 @@
 """
 Fig. 2 (mean fall speed vs. drop diameter, Parsivel, Kototabang) + reviewer-response analyses
 --------------------------------------------------------------------------------------------
-Addresses:
-  R2 minor 5, R3 minor 14, R3 minor 15 : QC cascade (samples AND drops removed at each step)
-  R2 minor 6, R3 major 10               : sensitivity to the +/-60 % Atlas velocity filter
-  R3 minor 21                           : drop counts per diameter bin (in Fig. 2 and in CSV)
-  R3 minor 16                           : sensitivity to the minimum-drop-count threshold
-  R3 minor 17                           : prints the density correction actually applied
-  R3 major 1 (partial)                  : per-minute large-drop velocity anomaly time series (CSV)
+QC cascade (samples AND drops removed at each step)
+sensitivity to the +/-60 % Atlas velocity filter
+drop counts per diameter bin (in Fig. 2 and in CSV)
+sensitivity to the minimum-drop-count threshold
+prints the density correction actually applied
+per-minute large-drop velocity anomaly time series (CSV)
 
 All loading, constants, Atlas speed and the QC settings come from dsd_common.py (same as Fig4-Fig8).
 Outputs (in dsd_common.OUT_DIR = ./Fig_outputs):
@@ -43,7 +42,7 @@ FRAC_LIST      = [0.20, 0.30, 0.40, 0.50, 0.60, None]   # sensitivity set (None 
 MIN_DROPS_LIST = [5, 10, 20, 30]
  
 D_LARGE        = 2.5   # mm, "large drop" threshold used in the manuscript
-MIN_BIN_DROPS  = 20    # a diameter bin needs >= this many drops to get a mean (as in the original script)
+MIN_BIN_DROPS  = 20    
 FLAG_BIN_DROPS = 100   # bins with fewer drops are drawn with hollow markers in Fig. 2
  
 BOOT_B    = 2000       # bootstrap replicates
@@ -112,8 +111,7 @@ def load_spectra():
 
 # ── QC cascade ─────────────────────────────────────────────────────────────────
 def run_qc(specs, rr, frac=BASE_FRAC, min_drops=MIN_DROPS, rr_min=RR_MIN):
-    """Same logic/order as the original script, with bookkeeping.
- 
+    """
     Order: rain rate -> diameter filter -> velocity filter -> minimum drop count.
     Because the diameter and velocity filters only remove drops, the final sample set is identical
     to testing the drop count last. Samples lost to the drop-count criterion are attributed to the
