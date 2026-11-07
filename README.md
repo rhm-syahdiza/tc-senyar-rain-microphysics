@@ -16,4 +16,4 @@ This repository is organized by manuscript figure.
 * FigS2.py: Zonal Hovmöller diagrams (a) Himawari-9 TBB, (b) BMKG Radar CMAX
 * FigS3.py: MAWS Kototabang - 10-Minute Wind Speed Average
 * FigS5.py: (a) EAR spectral width scatterplots versus the disdrometer rain rate (R), (b) versus EAR absolute value of the vertical air velocity.
-* dsd_common.py Function to read and process disdrometer data
+* dsd_common.py: Function to read and process disdrometer data
