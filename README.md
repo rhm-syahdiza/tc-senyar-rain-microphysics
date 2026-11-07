@@ -1,4 +1,4 @@
-# tc-senyar-rain-microphysics
+# tc-senyar-outer-rainbands-microphysics
 Python scripts for "Microphysical Properties of Tropical Cyclone Senyar Outer Rainbands"
 
 ## Repository Structure
