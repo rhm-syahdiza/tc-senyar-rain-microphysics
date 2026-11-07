@@ -1,5 +1,5 @@
 """
-Fig. 2 (mean fall speed vs. drop diameter, Parsivel, Kototabang) + reviewer-response analyses
+Fig. 2 (mean fall speed vs. drop diameter, Parsivel, Kototabang) + analyses
 --------------------------------------------------------------------------------------------
 QC cascade (samples AND drops removed at each step)
 sensitivity to the +/-60 % Atlas velocity filter
