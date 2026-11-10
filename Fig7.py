@@ -83,7 +83,7 @@ data = C.get_qc_dataset()
 d = data["dsd"]
 n_qc = len(data["idx"])
 
-# moment-method validity filters, counted one by one (R3 minor 19)
+# moment-method validity filters, counted one by one
 mu_all, lam_all, G_all = C.mu_lambda(d["M3"], d["M4"], d["M6"])
 nonpos = (d["M3"] <= 0) | (d["M4"] <= 0) | (d["M6"] <= 0)
 badG = ~nonpos & (G_all >= G_MAX)
