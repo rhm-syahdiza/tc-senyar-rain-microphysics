@@ -100,7 +100,7 @@ worst = err[~err["relation"].str.startswith("TC Senyar")].iloc[0]
 print(f"\nSentence: the {worst['relation']} relation produced the highest error with RMSE = {worst['RMSE_dBR']:.1f} dBR, "
       f"corresponding to QPE uncertainties from {worst['lower_error_pct']:.1f}% to +{worst['upper_error_pct']:.1f}%.")
 
-# ── Measured vs Atlas fall speed (R3 major 7) ──────────────────────────────────
+# ── Measured vs Atlas fall speed ──────────────────────────────────
 variants = [("1 manuscript: N(D) measured v, R with Atlas v", C.dsd(data["spec"], "measured", "atlas")),
             ("2 measured v for N(D) and R", C.dsd(data["spec"], "measured", "consistent")),
             ("3 Atlas v for N(D) and R", C.dsd(data["spec"], "atlas", "consistent"))]
